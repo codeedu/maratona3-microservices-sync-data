@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: django-admin-app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/home/django/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks: 
+      - default
+      - rabbitmq_microservices-sync
+
+  db:
+    image: postgres
+    container_name: django-admin-db
+    tty: true
+    environment:
+      - POSTGRES_DB=iniciando_django
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - iniciando-django-pgdata:/var/lib/postgresql/data
+    networks: 
+      - default
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: django-admin-pgadmin
+    tty: true
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@user.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    ports:
+      - "9000:80"
+    networks: 
+      - default
+
+volumes:
+  iniciando-django-pgdata:
+    external: true
+
+networks: 
+  default:
+    driver: bridge
+  rabbitmq_microservices-sync:
+    external: true
