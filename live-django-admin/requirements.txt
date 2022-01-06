@@ -7,5 +7,5 @@ pytz==2020.1
 simplejson==3.17.0
 six==1.15.0
 sqlparse==0.3.1
-celery==4.4.3
+celery==5.2.2
 kombu==4.6.9
